@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.yakamozapp.piano.Helper.MyTextview;
+import com.yakamozapp.piano.Main2Activity;
 import com.yakamozapp.piano.MainActivity;
 import com.yakamozapp.piano.Network.Api;
 import com.yakamozapp.piano.Network.NetworkInterface;
@@ -48,11 +49,14 @@ public class Login_Activity extends AppCompatActivity {
     private View progressOverlay;
     private View sendBtn;
     private Dialog alertDialogBaze;
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        pref= Login_Activity.this.getSharedPreferences("piano", MODE_PRIVATE);
 
         progressOverlay = findViewById(R.id.progress_overlay);
 
@@ -100,6 +104,8 @@ public class Login_Activity extends AppCompatActivity {
                     }
 
                     else {
+                        Intent i = new Intent(Login_Activity.this, Login.class);
+                        startActivity(i);
                         Log.i("", "onResponse: ");
 
                     }
@@ -143,9 +149,12 @@ public class Login_Activity extends AppCompatActivity {
                        showError(resObj.get("message").toString());
                     }
 
-                    else {
+                    else if (resObj.get("result").toString().equals("1")) {
                         Log.i("", "onResponse: ");
-
+                        String useid = resObj.get("user_id").toString();
+                        pref.edit().putString("userid",useid).apply();
+                        Intent i = new Intent(Login_Activity.this, SetPass.class);
+                        startActivity(i);
                     }
 
 
