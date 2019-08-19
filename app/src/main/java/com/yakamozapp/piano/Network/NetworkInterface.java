@@ -25,6 +25,8 @@ public interface NetworkInterface {
     @GET("verify")
     Call<JsonElement> verify(@Query("password") String password,@Query("mobile") String mobile);
 
+    @GET("change/password")
+    Call<JsonElement> changePass(@Query("user_id") String user_id,@Query("password") String password,@Query("password_confirm") String password_confirm);
 
 
 }

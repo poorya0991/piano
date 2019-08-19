@@ -33,6 +33,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -151,8 +153,7 @@ public class Login_Activity extends AppCompatActivity {
 
                     else if (resObj.get("result").toString().equals("1")) {
                         Log.i("", "onResponse: ");
-                        String useid = resObj.get("user_id").toString();
-                        pref.edit().putString("userid",useid).apply();
+
                         Intent i = new Intent(Login_Activity.this, SetPass.class);
                         startActivity(i);
                     }
@@ -180,8 +181,6 @@ public class Login_Activity extends AppCompatActivity {
         TextView toastTV = (TextView) toastLayout.getChildAt(0);
         toastTV.setTypeface(sans);
         toast.show();
-
-
     }
 
     public void verifyAlert() {
@@ -211,12 +210,33 @@ public class Login_Activity extends AppCompatActivity {
         });
 
 
-        Button resendBtn = alertDialogBaze.findViewById(R.id.resendBtn);
+        final Button resendBtn = alertDialogBaze.findViewById(R.id.resendBtn);
         resendBtn.setTypeface(sans);
+        resendBtn.setEnabled(false);
+        final Timer t = new Timer();
+        final int cnt = 0;
+        final int[] TimeCounter = {60};
+        t.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (TimeCounter[0] == cnt) {
+                            t.cancel();
+                            resendBtn.setEnabled(true);
+                            return;
+                        }
+
+                        resendBtn.setText("ارسال مجدد (" + String.valueOf(TimeCounter[0])+")");
+                        TimeCounter[0]--;
+                    }
+                });
+            }
+        }, 0, 1000);
         resendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+            alertDialogBaze.dismiss();
+            register();
             }
         });
 

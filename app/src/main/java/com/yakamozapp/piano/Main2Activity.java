@@ -30,8 +30,7 @@ public class Main2Activity extends AppCompatActivity {
         DefaultSliderView defaultSliderView = new DefaultSliderView(this);
         defaultSliderView
                 .image("https://tvfiles.alphacoders.com/100/hdclearart-10.png")
-                .setScaleType(BaseSliderView.ScaleType.Fit)
-                ;
+                .setScaleType(BaseSliderView.ScaleType.Fit);
 
         mDemoSlider.addSlider(defaultSliderView);
 
